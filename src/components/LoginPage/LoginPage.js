@@ -4,16 +4,32 @@ import params from './particles-params';
 import './LoginPage.css';
 import Logo from './Logo.svg';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { loginRequest, regRequest } from '../../actions/auth';
+import { 
+  getIsLoginFetching, 
+  getIsRegFetching,
+  getLoginError,
+  getRegError
+} from '../../reducers/auth';
 
 export class LoginPage extends PureComponent {
   static propTypes = {
+    isLoginLoading: PropTypes.bool.isRequired,
+    isRegLoading: PropTypes.bool.isRequired,
+    loginError: PropTypes.object,
+    regError: PropTypes.object,
     loginRequest: PropTypes.func.isRequired,
-    registrationRequest: PropTypes.func.isRequired
+    regRequest: PropTypes.func.isRequired
   }
 
   static defaultProps = {
-    loginRequest: (email, password) => { console.log(email, password) },
-    registrationRequest: (email, password) => { console.log(email, password) }
+    loginError: null,
+    regError: null,
+    isLoginLoading: false,
+    isRegLoading: false,    
+    loginRequest: () => null,
+    regRequest: () => null
   }
 
   state = {
@@ -32,12 +48,10 @@ export class LoginPage extends PureComponent {
     if (!email || !password) return;
 
     if (this.state.isLogin) {
-      this.props.loginRequest(email, password);
+      this.props.loginRequest({ email, password });
     } else {
-      this.props.registrationRequest(email, password);
+      this.props.regRequest({ email, password });
     }
-
-    this.setState({ email: '', password: '' });
   }
 
   handleChange = event => {
@@ -52,6 +66,7 @@ export class LoginPage extends PureComponent {
 
   render() {
     const { isLogin, email, password } = this.state;
+    const { isLoginLoading, isRegLoading, loginError, regError } = this.props;
 
     return (
       <main>
@@ -83,6 +98,9 @@ export class LoginPage extends PureComponent {
                   placeholder="password"
                 />
               </div>
+              { (isLoginLoading || isRegLoading) && <p className="spinner">Подождите ...</p>}
+              { (isLogin && loginError) && <p className="login__error">{ loginError.message }</p> }
+              { (!isLogin && regError) && <p className="login__error">{ regError.message.email }</p> }
               <button type="submit">{ isLogin ? 'Войти' : 'Зарегистрироваться' }</button>
             </form>
             <div className="login__footer">
@@ -99,4 +117,15 @@ export class LoginPage extends PureComponent {
   }
 }
 
-export default LoginPage;
+export default connect(
+  state => ({
+    isLoginLoading: getIsLoginFetching(state),
+    isRegLoading: getIsRegFetching(state),
+    loginError: getLoginError(state),
+    regError: getRegError(state)
+  }),
+  {
+    loginRequest,
+    regRequest
+  }
+)(LoginPage);
