@@ -12,3 +12,8 @@ script:
 branches:
   only:
   - master
+
+deploy:
+  provider: heroku
+  app: crypto-app-zahar517
+  api_key: $HEROKU_KEY
