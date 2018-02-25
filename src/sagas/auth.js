@@ -18,10 +18,12 @@ export function* authFlow() {
     } else {
       const action = yield take([loginSuccess, regSuccess]);
       token = action.payload;
+      yield call(setTokenToLocalStorage, token);
     }
 
     yield call(setTokenApi, token);
-    yield call(setTokenToLocalStorage, token);
+    console.log(token);
+    console.log('wait for logout');
     yield take(logout);
     yield call(removeTokenFromLocalStorage);
     yield call(clearTokenApi);
