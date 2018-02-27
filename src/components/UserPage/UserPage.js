@@ -1,60 +1,73 @@
 import React, { PureComponent } from 'react';
-import TradeOperations from '../TradeOperations';
 import { connect } from 'react-redux';
-import { 
-  getUserInfo,
-  getUserInfoIsLoading,
-  getUserInfoError
-} from '../../reducers/user';
-import { userInfoRequest } from '../../actions/user';
 import PropTypes from 'prop-types';
+import { selectBtc, selectEth } from '../../actions/currency';
+import AppHeader from '../AppHeader';
+import TradeOperations from '../TradeOperations';
+import Wallet from '../Wallet';
+import Chart from '../Chart';
+import AppFooter from '../AppFooter';
+import './UserPage.css';
 
 export class UserPage extends PureComponent {
   static propTypes = {
-    user: PropTypes.object,
-    error: PropTypes.object,
-    userIsLoading: PropTypes.bool.isRequired,
-    userInfoRequest: PropTypes.func.isRequired
+    selectBtc: PropTypes.func.isRequired,
+    selectEth: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    userIsLoading: false,
-    userInfoRequest: () => null
+    selectBtc: () => null,
+    selectEth: () => null,
+  };
+
+  constructor(props) {
+    super(props);
+
+    if (props.match.params.currency === 'btc') {
+      props.selectBtc();
+    } else {
+      props.selectEth();
+    }
   }
 
-  handleClick = () => this.props.userInfoRequest();
-  
-  componentDidMount() {
-    // this.props.userInfoRequest();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.match.params.currency === this.props.match.params.currency) return;
+    if (nextProps.match.params.currency === 'btc') {
+      nextProps.selectBtc();
+    } else {
+      nextProps.selectEth();
+    }
   }
 
   render() {
-    const { userIsLoading, user, error} = this.props;
-
     return (
-      <main>
-        <div>
-          User info
-          { userIsLoading && <div className="user__spinner">'Идет загрузка ...'</div> }
-          { error && <div className="user__error">Не удалось загрузить</div> }
-          { user &&
-            <div className="user__email">{ user.email }</div>
-          }
-          <button onClick={ this.handleClick }>Click me</button>
-        </div>
-        <TradeOperations />
-      </main>
+      <div className="app">
+        <header className="app__header">
+          <AppHeader />
+        </header>
+        <main className="app__main">
+          <div className="main__top">
+            <div className="main__wallet">
+              <Wallet />
+            </div>
+            <div className="main__trade">
+              <TradeOperations />
+            </div>
+          </div>
+          <Chart />
+        </main>
+        <footer className="app__footer">
+          <AppFooter />
+        </footer>
+      </div>
     );
   }
 }
 
 export default connect(
-  state => ({
-    user: getUserInfo(state),
-    userIsLoading: getUserInfoIsLoading(state),
-    error: getUserInfoError(state)
-  }),
+  null,
   {
-    userInfoRequest
+    selectBtc,
+    selectEth
   }
 )(UserPage);

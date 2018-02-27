@@ -1,33 +1,33 @@
 import { handleActions } from 'redux-actions';
 import { combineReducers } from 'redux';
 import { 
-  userInfoRequest,
-  userInfoSuccess,
-  userInfoError
+  fetchUserInfoRequest,
+  fetchUserInfoSuccess,
+  fetchUserInfoFailure
 } from '../actions/user';
 
 const isLoading = handleActions(
   {
-    [userInfoRequest]: () => true,
-    [userInfoSuccess]: () => false,
-    [userInfoError]: () => false
+    [fetchUserInfoRequest]: () => true,
+    [fetchUserInfoSuccess]: () => false,
+    [fetchUserInfoFailure]: () => false
   },
   false
 );
 
 const info = handleActions(
   {
-    [userInfoRequest]: () => null,
-    [userInfoSuccess]: (state, action) => action.payload
+    [fetchUserInfoRequest]: () => null,
+    [fetchUserInfoSuccess]: (state, action) => action.payload
   },
   null
 );
 
 const error = handleActions(
   {
-    [userInfoRequest]: () => null,
-    [userInfoSuccess]: () => null,
-    [userInfoError]: () => (state, action) => action.payload
+    [fetchUserInfoRequest]: () => null,
+    [fetchUserInfoSuccess]: () => null,
+    [fetchUserInfoFailure]: (state, action) => action.payload
   },
   null
 )

@@ -41,7 +41,7 @@ const enhance = compose(
 );
 
 const Container = styled.article`
-  padding-top: 40px;
+  text-align: left;
 `;
 
 const InputWrapper = styled.div`
@@ -49,18 +49,17 @@ const InputWrapper = styled.div`
   border-radius: 4px;
   display: inline-block;
   position: relative;
-  margin: 5px 0;
-  width: 218px;
+  margin-bottom: 1rem;
 `;
 
 const Input = styled.input`
   background-color: transparent;
   border: none;
   text-align: right;
-  width: 100%;
-  padding: 5px 0 3px;
+  width: 13rem;
+  padding: 0.25rem;
   padding-right: 50px;
-  box-sizing: border-box;
+  font-size: 1rem;
 `;
 
 const Currency = styled.span`
@@ -69,16 +68,15 @@ const Currency = styled.span`
   width: 38px;
   text-align: left;
   color: #adadad;
-  top: 5px;
+  top: 3px;
 `;
 
 const Button = styled.button`
+  display: inline-block;
   width: 100px;
-  margin-left: 20px;
-  border: 0;
   color: #fff;
-  padding: 5px 0 3px;
-  border-radius: 3px;
+  padding: 0.25rem 1rem;
+  margin-left: 1rem;
 `;
 
 const ButtonSell = Button.extend`

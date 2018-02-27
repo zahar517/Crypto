@@ -1,0 +1,34 @@
+.wallet {
+  max-width: 20rem;
+  margin-left: auto;
+}
+
+.wallet h2 {
+  text-align: left;
+}
+
+.coin__container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.coin__container + .coin__container {
+  margin-top: 1rem;
+}
+
+.coin__input {
+  flex: 1 1 8rem;
+  background: #222;
+  color: #fff;
+  border-radius: 4px;
+  text-align: right;
+  padding: 0.25rem 1rem;
+}
+
+.coin__currency {
+  margin-left: 1rem;
+  flex: 1 1;
+  text-align: left;
+}

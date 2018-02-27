@@ -1,6 +1,6 @@
 import {takeLatest, fork, take, select, put, cancel, call} from 'redux-saga/effects';
 import {delay} from 'redux-saga';
-import {loginSuccess, logout} from '../actions/auth';
+import { loginSuccess, regSuccess, logout } from '../actions/auth';
 import {getOffset} from '../reducers/currency';
 import {
   selectBtc,
@@ -15,7 +15,7 @@ import {
 } from '../actions/currency';
 import {candles, getWallet} from '../api';
 import {fetchWalletRequest, fetchWalletSuccess, fetchWalletFailure} from '../actions/wallet';
-import {changeLocation} from '../actions/location';
+// import {changeLocation} from '../actions/location';
 
 function* fetchBtcFlow(action) {
   try {
@@ -41,14 +41,14 @@ function* loginCurrencyFlow() {
     yield put(fetchBtcRequest(offset));
     yield put(fetchEthRequest(offset));
 
-    yield delay(15000);
+    yield delay(60000);
   }
 }
 
 export function* currencyWatch() {
   let currencyTask;
   while (true) {
-    const action = yield take([loginSuccess, logout, selectBtc, selectEth, selectOffset, changeLocation]);
+    const action = yield take([loginSuccess, regSuccess, logout, selectBtc, selectEth, selectOffset ]);
 
     if (currencyTask) {
       yield cancel(currencyTask);

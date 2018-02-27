@@ -72,7 +72,7 @@ export class LoginPage extends PureComponent {
     const { isLogin, email, password } = this.state;
     const { isAuthorized, isLoginLoading, isRegLoading, loginError, regError } = this.props;
 
-    if (isAuthorized) return <Redirect to="/profile" />;
+    if (isAuthorized) return <Redirect to="/trade/eth" />;
     
     return (
       <main>

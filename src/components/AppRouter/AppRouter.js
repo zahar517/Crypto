@@ -9,7 +9,7 @@ export class AppRouter extends PureComponent {
     return (
       <Switch>
         <Route exact path="/" component={ LoginPage } />
-        <PrivateRoute path="/profile" component={ UserPage } />
+        <PrivateRoute path="/trade/:currency" component={ UserPage } />
         <Redirect to="/" />
       </Switch>
     );

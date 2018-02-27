@@ -1,12 +1,20 @@
+html, body {
+  height: 100%;
+}
+
 html {
   font-size: 18px;
-  line-height: 1.42
+  line-height: 1.42;
 }
 
 body {
   margin: 0;
   padding: 0;
   background: #eee;
+}
+
+#root {
+  height: 100%;
 }
 
 * {
@@ -21,9 +29,14 @@ input, button {
   outline: none;
 }
 
-input {
+input, button {
   border: 1px solid #eee;
   -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  -moz-appearance: none;
+  appearance: none; 
+  padding: 0;
+  margin: 0;
 }
 
 ::-moz-focus-inner {
@@ -44,4 +57,8 @@ p {
 
 main {
   height: 100vh;
+}
+
+img {
+  display: block;
 }

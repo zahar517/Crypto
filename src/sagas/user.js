@@ -1,22 +1,20 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { 
-  userInfoRequest, 
-  userInfoSuccess, 
-  userInfoError 
+  fetchUserInfoRequest, 
+  fetchUserInfoSuccess, 
+  fetchUserInfoFailure 
 } from '../actions/user';
 import { getUserInfo } from '../api';
 
 export function* userWorker() {
   try {
-    const result = yield call(getUserInfo);
-    console.log(result);
-    yield put(userInfoSuccess(result));
+    const { data } = yield call(getUserInfo);
+    yield put(fetchUserInfoSuccess(data.result));
   } catch(error) {
-    console.log(error);
-    yield put(userInfoError(error));
+    yield put(fetchUserInfoFailure(error));
   }
 };
 
 export function* userWatcher() {
-  yield takeLatest(userInfoRequest, userWorker);
+  yield takeLatest(fetchUserInfoRequest, userWorker);
 };
