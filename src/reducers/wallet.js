@@ -31,6 +31,8 @@ const coins = handleActions(
 
 const error = handleActions(
   {
+    [sellCurrencyRequest]: () => null,
+    [buyCurrencyRequest]: () => null,
     [fetchWalletRequest]: () => null,
     [fetchWalletSuccess]: () => null,
     [fetchWalletFailure]: (state, action) => action.payload
