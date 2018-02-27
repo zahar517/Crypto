@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {getCurrentCurrencyPurchase, getCurrentCurrencySell, getSelectedCurrency} from '../../reducers/currency';
 import {buyCurrencyRequest, sellCurrencyRequest} from '../../actions/currency';
 import styled from 'styled-components';
-import {getError} from '../../reducers/wallet';
+import { getError, getIsLoading } from '../../reducers/wallet';
 
 const enhance = compose(
   withRouter,
@@ -15,6 +15,7 @@ const enhance = compose(
       currentCurrentSell: getCurrentCurrencySell(state),
       selectedCurrency: getSelectedCurrency(state),
       error: getError(state),
+      isLoading: getIsLoading(state),
     }),
     {
       buyCurrencyRequest,
@@ -29,6 +30,7 @@ const enhance = compose(
       currentCurrentPurchase,
       currentCurrentSell,
       error,
+      isLoading
     }) => ({
       selectedCurrency,
       buyCurrencyRequest,
@@ -36,6 +38,7 @@ const enhance = compose(
       purchase: currentCurrentPurchase,
       sell: currentCurrentSell,
       error,
+      isLoading
     }),
   ),
 );
@@ -77,6 +80,9 @@ const Button = styled.button`
   color: #fff;
   padding: 0.25rem 1rem;
   margin-left: 1rem;
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 const ButtonSell = Button.extend`
@@ -173,7 +179,7 @@ class TradeOperations extends PureComponent {
   }
 
   render() {
-    const {error, selectedCurrency} = this.props;
+    const {error, selectedCurrency, isLoading} = this.props;
     const {inputFiat, inputSell, inputPurchase} = this.state;
     return (
       <Container>
@@ -199,7 +205,7 @@ class TradeOperations extends PureComponent {
             />
             <Currency>$</Currency>
           </InputWrapper>
-          <ButtonSell onClick={this.handleSell}>Продать</ButtonSell>
+          <ButtonSell onClick={this.handleSell} disabled={ isLoading }>Продать</ButtonSell>
         </div>
         <div>
           <InputWrapper>
@@ -212,7 +218,7 @@ class TradeOperations extends PureComponent {
             />
             <Currency>$</Currency>
           </InputWrapper>
-          <ButtonPurchase onClick={this.handleBuy}>Купить</ButtonPurchase>
+          <ButtonPurchase onClick={this.handleBuy} disabled={ isLoading }>Купить</ButtonPurchase>
         </div>
         {error && <p style={{color: 'red'}}>{error}</p>}
       </Container>
