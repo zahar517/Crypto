@@ -9,7 +9,7 @@ export function* buyCurrencyWorker(action) {
     const result = yield call(buyCurrency, selectedCurrency, value);
     yield put(fetchWalletSuccess(result.data));
   } catch(error) {
-    yield put(fetchWalletFailure(error));
+    yield put(fetchWalletFailure(typeof error === 'object' ? 'Сервис недоступен' : error));
   }
 }
 
@@ -19,7 +19,7 @@ export function* sellCurrencyWorker(action) {
     const result = yield call(sellCurrency, selectedCurrency, value);
     yield put(fetchWalletSuccess(result.data));
   } catch(error) {
-    yield put(fetchWalletFailure(error));
+    yield put(fetchWalletFailure(typeof error === 'object' ? 'Сервис недоступен' : error));
   }
 }
 

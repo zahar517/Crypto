@@ -22,7 +22,7 @@ function* fetchBtcFlow(action) {
     const response = yield call(candles, 'btc', action.payload);
     yield put(fetchBtcSuccess(response.data.result));
   } catch (error) {
-    yield put(fetchBtcFailure(error));
+    yield put(fetchBtcFailure(typeof error === 'object' ? 'Сервис недоступен' : error));
   }
 }
 
@@ -31,7 +31,7 @@ function* fetchEthFlow(action) {
     const response = yield call(candles, 'eth', action.payload);
     yield put(fetchEthSuccess(response.data.result));
   } catch (error) {
-    yield put(fetchEthFailure(error));
+    yield put(fetchEthFailure(typeof error === 'object' ? 'Сервис недоступен' : error));
   }
 }
 
@@ -63,7 +63,7 @@ function* fetchWalletFlow() {
     const response = yield call(getWallet);
     yield put(fetchWalletSuccess(response.data.result));
   } catch (error) {
-    yield put(fetchWalletFailure(error));
+    yield put(fetchWalletFailure(typeof error === 'object' ? 'Сервис недоступен' : error));
   }
 }
 

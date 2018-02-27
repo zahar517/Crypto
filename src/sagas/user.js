@@ -11,7 +11,7 @@ export function* userWorker() {
     const { data } = yield call(getUserInfo);
     yield put(fetchUserInfoSuccess(data.result));
   } catch(error) {
-    yield put(fetchUserInfoFailure(error));
+    yield put(fetchUserInfoFailure(typeof error === 'object' ? 'Сервис недоступен' : error));
   }
 };
 
