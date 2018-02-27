@@ -1,0 +1,24 @@
+.chart__buttons {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 750px;
+  background: #dce7f3;
+  justify-content: flex-end;
+}
+
+.chart__buttons button {
+  background: transparent;
+  border: none;
+}
+
+.chart__buttons button + button {
+  margin-left: 1rem;
+}
+
+.chart__buttons .selected {
+  background: #9fcaf8;
+}
+
+.chart__buttons button:hover {
+  background: #c8ddf3;
+}

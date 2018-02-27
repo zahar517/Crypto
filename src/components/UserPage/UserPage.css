@@ -1,0 +1,30 @@
+.app {
+  display: flex;
+  flex-flow: column nowrap;
+  min-height: 100%;
+}
+
+.app__main {
+  height: auto;
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+}
+
+.main__top {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.main__wallet {
+  flex: 1 1 50%;
+}
+
+.main__trade {
+  flex: 1 1 50%;
+}
