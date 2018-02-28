@@ -8,7 +8,6 @@ import {
   fetchUserInfoSuccess,
   fetchUserInfoFailure
 } from '../../actions/user';
-import { combineReducers } from 'redux';
 
 describe('User reducer tests', () => {
   let initialState;
@@ -32,9 +31,9 @@ describe('User reducer tests', () => {
     const state2 = userReducer(state1, fetchUserInfoSuccess({}));
     const state3 = userReducer(state1, fetchUserInfoFailure({}));
 
-    expect(state1.isLoading).toBeTruthy();
-    expect(state2.isLoading).toBeFalsy();
-    expect(state3.isLoading).toBeFalsy();
+    expect(state1.isLoading).toBe(true);
+    expect(state2.isLoading).toBe(false);
+    expect(state3.isLoading).toBe(false);
   });
 
   it('fill user info if fetchUserInfoSuccess', () => {
@@ -73,17 +72,15 @@ describe('User reducer tests', () => {
   });
 
   it('selectors returns wright values', () => {
-    const rootReducer = combineReducers({ user: userReducer });
-    const testInfo = { info: 'some info' };
-    const testError = { error: 'some error' };
+    const isLoading = true;
+    const info = { info: 'some info' };
+    const error = { error: 'some error' };
+    const state = {
+      user: { ...initialState, isLoading, info, error }
+    }
 
-    const initialState = rootReducer(undefined, { type: 'TEST_ACTION' });
-    const state1 = rootReducer(initialState, fetchUserInfoRequest());
-    const state2 = rootReducer(state1, fetchUserInfoSuccess(testInfo));
-    const state3 = rootReducer(state1, fetchUserInfoFailure(testError));
-
-    expect(getUserInfoIsLoading(state1)).toBeTruthy();
-    expect(getUserInfo(state2)).toEqual(testInfo);
-    expect(getUserInfoError(state3)).toEqual(testError);
+    expect(getUserInfoIsLoading(state)).toBe(true);
+    expect(getUserInfo(state)).toBe(info);
+    expect(getUserInfoError(state)).toBe(error);
   });
 });
