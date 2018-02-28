@@ -17,38 +17,44 @@ import {candles, getWallet} from '../api';
 import {fetchWalletRequest, fetchWalletSuccess, fetchWalletFailure} from '../actions/wallet';
 // import {changeLocation} from '../actions/location';
 
-function* fetchBtcFlow(action) {
+export const DELAY = 60000;
+export const ERROR_MESSAGE = 'Сервис недоступен';
+export const handleError = error => typeof error === 'object' ? ERROR_MESSAGE : error;
+
+export function* fetchBtcFlow(action) {
   try {
     const response = yield call(candles, 'btc', action.payload);
     yield put(fetchBtcSuccess(response.data.result));
   } catch (error) {
-    yield put(fetchBtcFailure(typeof error === 'object' ? 'Сервис недоступен' : error));
+    const errorMessage = yield call(handleError, error);
+    yield put(fetchBtcFailure(errorMessage));
   }
 }
 
-function* fetchEthFlow(action) {
+export function* fetchEthFlow(action) {
   try {
     const response = yield call(candles, 'eth', action.payload);
     yield put(fetchEthSuccess(response.data.result));
   } catch (error) {
-    yield put(fetchEthFailure(typeof error === 'object' ? 'Сервис недоступен' : error));
+    const errorMessage = yield call(handleError, error);
+    yield put(fetchEthFailure(errorMessage));
   }
 }
 
-function* loginCurrencyFlow() {
+export function* loginCurrencyFlow() {
   while (true) {
     const offset = yield select(getOffset);
     yield put(fetchBtcRequest(offset));
     yield put(fetchEthRequest(offset));
 
-    yield delay(60000);
+    yield call(delay, 60000);
   }
 }
 
 export function* currencyWatch() {
   let currencyTask;
   while (true) {
-    const action = yield take([loginSuccess, regSuccess, logout, selectBtc, selectEth, selectOffset ]);
+    const action = yield take([ loginSuccess, regSuccess, logout, selectBtc, selectEth, selectOffset ]);
 
     if (currencyTask) {
       yield cancel(currencyTask);
@@ -58,12 +64,13 @@ export function* currencyWatch() {
   }
 }
 
-function* fetchWalletFlow() {
+export function* fetchWalletFlow() {
   try {
     const response = yield call(getWallet);
     yield put(fetchWalletSuccess(response.data.result));
   } catch (error) {
-    yield put(fetchWalletFailure(typeof error === 'object' ? 'Сервис недоступен' : error));
+    const errorMessage = yield call(handleError, error);
+    yield put(fetchWalletFailure(errorMessage));
   }
 }
 
