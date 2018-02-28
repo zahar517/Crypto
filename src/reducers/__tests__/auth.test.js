@@ -100,9 +100,9 @@ describe('Reducer auth tests', () => {
     )(undefined, { type: 'TEST_ACTION' });
 
     expect(getIsLoginFetching(state)).toBeFalsy();
-    expect(getLoginError(state)).toBeFalsy();
+    expect(getLoginError(state)).toBeNull();
     expect(getIsRegFetching(state)).toBeFalsy();
-    expect(getRegError(state)).toBeFalsy();
+    expect(getRegError(state)).toBeNull();
     expect(getIsAuthorized(state)).toBeFalsy();
-  })
-})
+  });
+});
