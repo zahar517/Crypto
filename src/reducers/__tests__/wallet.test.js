@@ -1,7 +1,6 @@
 import walletReducer from '../wallet';
 import { fetchWalletRequest, fetchWalletSuccess, fetchWalletFailure } from '../../actions/wallet';
 import { sellCurrencyRequest, buyCurrencyRequest } from '../../actions/currency';
-import { combineReducers } from 'redux';
 import { getIsLoading, getCoins, getError } from '../wallet';
 
 describe('Wallet reducer tests', () => {
@@ -28,11 +27,11 @@ describe('Wallet reducer tests', () => {
     const state4 = walletReducer(initialState, sellCurrencyRequest());
     const state5 = walletReducer(initialState, buyCurrencyRequest());
 
-    expect(state1.isLoading).toBeTruthy();
-    expect(state2.isLoading).toBeFalsy();
-    expect(state3.isLoading).toBeFalsy();
-    expect(state4.isLoading).toBeTruthy();
-    expect(state5.isLoading).toBeTruthy();
+    expect(state1.isLoading).toBe(true);
+    expect(state2.isLoading).toBe(false);
+    expect(state3.isLoading).toBe(false);
+    expect(state4.isLoading).toBe(true);
+    expect(state5.isLoading).toBe(true);
   });
 
   it('fill coins if fetchWalletSuccess', () => {
@@ -70,17 +69,15 @@ describe('Wallet reducer tests', () => {
   });
 
   it('selectors returns wright values', () => {
-    const rootReducer = combineReducers({ wallet: walletReducer });
-    const testCoins = { coins: 'some coins' };
-    const testError = { error: 'some error' };
+    const isLoading = true;
+    const coins = { coins: 'some coins' };
+    const error = { error: 'some error' };
+    const state = {
+      wallet: { ...initialState, isLoading, coins, error }
+    }
 
-    const initialState = rootReducer(undefined, { type: 'TEST_ACTION' });
-    const state1 = rootReducer(initialState, fetchWalletRequest());
-    const state2 = rootReducer(state1, fetchWalletSuccess(testCoins));
-    const state3 = rootReducer(state1, fetchWalletFailure(testError));
-
-    expect(getIsLoading(state1)).toBeTruthy();
-    expect(getCoins(state2)).toEqual(testCoins);
-    expect(getError(state3)).toEqual(testError);
+    expect(getIsLoading(state)).toBe(true);
+    expect(getCoins(state)).toBe(coins);
+    expect(getError(state)).toBe(error);
   });
 });

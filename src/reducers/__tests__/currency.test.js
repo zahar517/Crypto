@@ -96,106 +96,139 @@ describe('Currency reducer tests', () => {
   });
 
   describe('Currency selectors tests', () => {
-    let rootReducer;
     let initialState;
 
     beforeEach(() => {
-      rootReducer = combineReducers({ currency: currencyReducer });
-      initialState = rootReducer(undefined, { type: 'TEST_ACTION' });  
+      initialState = {
+        isBtcLoading: false,
+        isEthLoading: false,
+        btc: [],
+        eth: [],
+        offset: "7d",
+        selected: "eth",
+      };
+    });
+  
+    it('getOffset selector returns "some offset" if offset="some offset"', () => {
+      const offset = 'some offset';
+      const state = {
+        currency: { ...initialState, offset }
+      };
+
+      expect(getOffset(state)).toBe(offset);
     });
 
-    it('getOffset selector returns="some offset" if dispatch selectOffset with payload="some offset"', () => {
-      const testOffset = 'some offset';
-      const state = rootReducer(initialState, selectOffset(testOffset));
+    it('getSelectedCurrency selector returns btc if selected=btc', () => {
+      const selected = 'btc';
+      const state = {
+        currency: { ...initialState, selected }
+      };
 
-      expect(getOffset(state)).toEqual(testOffset);
+      expect(getSelectedCurrency(state)).toBe(selected);
     });
 
-    it('getSelectedCurrency selector returns btc if selectBtc', () => {
-      const testCurrency = 'btc';
-      const state = rootReducer(initialState, selectBtc());
+    it('getIsBtcLoading selector returns true if isBtcLoading=true', () => {
+      const isBtcLoading = true;
+      const state = {
+        currency: { ...initialState, isBtcLoading }
+      };
 
-      expect(getSelectedCurrency(state)).toEqual(testCurrency);
+      expect(getIsBtcLoading(state)).toBe(true);
     });
 
-    it('getIsBtcLoading selector returns true if fetchBtcRequest', () => {
-      const state = rootReducer(initialState, fetchBtcRequest());
+    it('getIsEthLoading selector returns true if isEthLoading=true', () => {
+      const isEthLoading = true;
+      const state = {
+        currency: { ...initialState, isEthLoading }
+      };
 
-      expect(getIsBtcLoading(state)).toBeTruthy();
+      expect(getIsEthLoading(state)).toBe(isEthLoading);
     });
 
-    it('getIsEthLoading selector returns true if fetchEthRequest', () => {
-      const state = rootReducer(initialState, fetchEthRequest());
+    it('getCurrentCurrencyPurchase selector returns first item purchase value if btc not empty', () => {
+      const btc = [{ purchase: 10 }];
+      const selected = 'btc';
+      const state = {
+        currency: { ...initialState, btc, selected }
+      };
 
-      expect(getIsEthLoading(state)).toBeTruthy();
-    });
-
-    it('getCurrentCurrencyPurchase selector returns first item value if btc not empty', () => {
-      const testBtc = [{ purchase: 10 }];
-      const state1 = rootReducer(initialState, selectBtc());
-      const state2 = rootReducer(state1, fetchBtcSuccess(testBtc));
-
-      expect(getCurrentCurrencyPurchase(state2)).toEqual(testBtc[0].purchase);
+      expect(getCurrentCurrencyPurchase(state)).toBe(btc[0].purchase);
     });
 
     it('getCurrentCurrencyPurchase selector returns 0 if btc empty', () => {
-      const testBtc = [];
-      const state1 = rootReducer(initialState, selectBtc());
-      const state2 = rootReducer(state1, fetchBtcSuccess(testBtc));
+      const btc = [];
+      const selected = 'btc';
+      const state = {
+        currency: { ...initialState, btc, selected }
+      };
 
-      expect(getCurrentCurrencyPurchase(state2)).toEqual(0);
+      expect(getCurrentCurrencyPurchase(state)).toBe(0);
     });
 
-    it('getCurrentCurrencySell selector returns first item value if eth not empty', () => {
-      const testEth = [{ sell: 20 }];
-      const state1 = rootReducer(initialState, selectEth());
-      const state2 = rootReducer(state1, fetchEthSuccess(testEth));
+    it('getCurrentCurrencySell selector returns first item sell value if eth not empty', () => {
+      const eth = [{ sell: 20 }];
+      const selected = 'eth';
+      const state = {
+        currency: { ...initialState, eth, selected }
+      };
 
-      expect(getCurrentCurrencySell(state2)).toEqual(testEth[0].sell);
+      expect(getCurrentCurrencySell(state)).toBe(eth[0].sell);
     });
 
     it('getCurrentCurrencySell selector returns 0 if eth empty', () => {
-      const testEth = [];      
-      const state1 = rootReducer(initialState, selectEth());
-      const state2 = rootReducer(state1, fetchEthSuccess(testEth));
+      const eth = [];
+      const selected = 'eth';
+      const state = {
+        currency: { ...initialState, eth, selected }
+      };
 
-      expect(getCurrentCurrencySell(state2)).toEqual(0);
+      expect(getCurrentCurrencySell(state)).toBe(0);
     });
 
-    it('getCurrentCurrencyQuotes selector returns quotes of eth if selectEth', () => {
-      const testEth = [{ sell: 20 }];
-      const state1 = rootReducer(initialState, selectEth());
-      const state2 = rootReducer(state1, fetchEthSuccess(testEth));
+    it('getCurrentCurrencyQuotes selector returns quotes of eth if selected eth', () => {
+      const eth = [{ sell: 20 }];
+      const selected = 'eth';
+      const state = {
+        currency: { ...initialState, eth , selected }
+      };
 
-      expect(getCurrentCurrencyQuotes(state2)).toEqual(testEth);
+      expect(getCurrentCurrencyQuotes(state)).toEqual(eth);
     });
 
     it('getBtcPurchase selector returns purchase value of btc first item', () => {
-      const testBtc = [{ purchase: 10 }];
-      const state1 = rootReducer(initialState, fetchBtcSuccess(testBtc));
+      const btc = [{ purchase: 10 }];
+      const state = {
+        currency: { ...initialState, btc }
+      };
 
-      expect(getBtcPurchase(state1)).toEqual(testBtc[0].purchase);
+      expect(getBtcPurchase(state)).toBe(btc[0].purchase);
     });
 
     it('getBtcPurchase selector returns 0 if btc empty', () => {
-      const testBtc = [];
-      const state1 = rootReducer(initialState, fetchBtcSuccess(testBtc));
+      const btc = [];
+      const state = {
+        currency: { ...initialState, btc }
+      };
 
-      expect(getBtcPurchase(state1)).toEqual(0);
+      expect(getBtcPurchase(state)).toBe(0);
     });
 
     it('getEthPurchase selector returns purchase value of btc first item', () => {
-      const testEth = [{ purchase: 10 }];
-      const state1 = rootReducer(initialState, fetchEthSuccess(testEth));
+      const eth = [{ purchase: 10 }];
+      const state = {
+        currency: { ...initialState, eth }
+      };
 
-      expect(getEthPurchase(state1)).toEqual(testEth[0].purchase);
+      expect(getEthPurchase(state)).toBe(eth[0].purchase);
     });
 
     it('getEthPurchase selector returns 0 if btc empty', () => {
-      const testEth = [];
-      const state1 = rootReducer(initialState, fetchEthSuccess(testEth));
+      const eth = [];
+      const state = {
+        currency: { ...initialState, eth }
+      };
 
-      expect(getEthPurchase(state1)).toEqual(0);
+      expect(getEthPurchase(state)).toBe(0);
     });
   });
 });
