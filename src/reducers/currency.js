@@ -80,12 +80,12 @@ export const getCurrentCurrencyQuotes = state => {
 
 export const getBtcPurchase = state => {
   const btc = state.currency.btc[0];
-  return btc ? btc.sell : 0;
+  return btc ? btc.purchase : 0;
 }
 
 export const getEthPurchase = state => {
   const eth = state.currency.eth[0];
-  return eth ? eth.sell : 0;
+  return eth ? eth.purchase : 0;
 }
 
 export const getIsBtcLoading = state => state.currency.isBtcLoading;
