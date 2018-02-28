@@ -6,12 +6,16 @@ import {
 } from '../actions/user';
 import { getUserInfo } from '../api';
 
+export const ERROR_MESSAGE = 'Сервис недоступен';
+export const handleError = error => typeof error === 'object' ? ERROR_MESSAGE : error;
+
 export function* userWorker() {
   try {
     const { data } = yield call(getUserInfo);
     yield put(fetchUserInfoSuccess(data.result));
   } catch(error) {
-    yield put(fetchUserInfoFailure(typeof error === 'object' ? 'Сервис недоступен' : error));
+    const errorMessage = yield call(handleError, error);
+    yield put(fetchUserInfoFailure(errorMessage));
   }
 };
 
