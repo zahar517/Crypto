@@ -81,7 +81,7 @@ const Button = styled.button`
   padding: 0.25rem 1rem;
   margin-left: 1rem;
   &:disabled {
-    cursor: not-allowed;
+    cursor: wait;
   }
 `;
 
