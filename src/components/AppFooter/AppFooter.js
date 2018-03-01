@@ -7,9 +7,8 @@ export class AppFooter extends PureComponent {
     return (
       <div className="footer">
         <p>Сделано с любовью и старанием<br />
-        на курсе "React.js" в Loftschool.<br />
         Автор работы: <b>Захаров Дмитрий</b>.</p>
-        <div className="header__logo">
+        <div className="footer__logo">
           <img src={ Logo } alt="logo" />
         </div>
       </div>
