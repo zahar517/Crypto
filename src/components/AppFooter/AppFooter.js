@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import Logo from '../AppHeader/Logo-white.svg';
+import Logo from '../Logo';
 import styled from 'styled-components';
 
 const Footer = styled.footer`
@@ -15,23 +15,13 @@ const Footer = styled.footer`
   }
 `;
 
-export const FooterLogo = styled.div`
-  width: 10rem;
-  img {
-    display: block;
-    width: 100%;
-  }
-`;
-
 export class AppFooter extends PureComponent {
   render() {
     return (
       <Footer>
         <p>Сделано с любовью и старанием<br />
         Автор работы: <b>Захаров Дмитрий</b>.</p>
-        <FooterLogo>
-          <img src={ Logo } alt="logo" />
-        </FooterLogo>
+        <Logo />
       </Footer>
     );
   }
