@@ -10,14 +10,14 @@ const Logo = styled.div`
   }
 `;
 
-const StyledLogo = props => (
+const LogoComponent = props => (
   <Logo { ...props }>
     <img src={ logo } alt="logo" />
   </Logo>
 );
 
-StyledLogo.propTypes = {
+LogoComponent.propTypes = {
   width: PropTypes.string
 };
 
-export default StyledLogo;
+export default LogoComponent;
